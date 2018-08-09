@@ -3,7 +3,7 @@
 const debug = require('debug')('orthology:server');
 const http = require('http');
 const bunyan = require('bunyan');
-const backend = require('../lib/storage');
+const backend = require('paxdb-orthology-lib');
 const app = require('../app');
 
 const log = bunyan.createLogger({
@@ -19,12 +19,12 @@ function normalizePort(val) {
     const port = parseInt(val, 10);
 
     if (isNaN(port)) { //eslint-disable-line no-restricted-globals
-    // named pipe
+        // named pipe
         return val;
     }
 
     if (port >= 0) {
-    // port number
+        // port number
         return port;
     }
 
@@ -102,50 +102,54 @@ if (require.main === module) {
         pass: process.env.NEO4J_PASS
     });
     log.info(`testing storage connection ${process.env.NEO4J_URL}`);
-    neo4j.count('NOG').then((num) => {
-        log.info(`connection works, total groups: ${num}`);
-        boot(neo4j);
-    }).catch((reason) => {
-        log.warn(`failed to connect with the provided password: ${reason.message}`);
-        if (reason.statusCode === 401 && reason.message === 'Invalid username or password.') {
-            log.info('will try with the default password');
+    neo4j.count('NOG')
+        .then((num) => {
+            log.info(`connection works, total groups: ${num}`);
+            boot(neo4j);
+        })
+        .catch((reason) => {
+            log.warn(`failed to connect with the provided password: ${reason.message}`);
+            if (reason.statusCode === 401 && reason.message === 'Invalid username or password.') {
+                log.info('will try with the default password');
 
-            const tmpNeo = backend({
-                server: process.env.NEO4J_URL,
-                user: 'neo4j',
-                pass: 'neo4j'
-            });
+                const tmpNeo = backend({
+                    server: process.env.NEO4J_URL,
+                    user: 'neo4j',
+                    pass: 'neo4j'
+                });
 
-            tmpNeo.count('NOG').then(() => {
-                log.warn('using the default password, consider changing it!');
-                boot(tmpNeo);
-            }).catch((err2) => {
-                log.warn('failed using the default password');
-                if (err2.statusCode === 403 && err2.message.indexOf('change their password') > -1) {
-                    log.info('fresh neo4j instance, must change the initial password');
-                    tmpNeo.changePassword(process.env.NEO4J_PASS, (err) => {
-                        if (err) {
-                            log.error(err, 'failed to change the initial password');
-                            process.exit(1);
+                tmpNeo.count('NOG')
+                    .then(() => {
+                        log.warn('using the default password, consider changing it!');
+                        boot(tmpNeo);
+                    })
+                    .catch((err2) => {
+                        log.warn('failed using the default password');
+                        if (err2.statusCode === 403 && err2.message.indexOf('change their password') > -1) {
+                            log.info('fresh neo4j instance, must change the initial password');
+                            tmpNeo.changePassword(process.env.NEO4J_PASS, (err) => {
+                                if (err) {
+                                    log.error(err, 'failed to change the initial password');
+                                    process.exit(1);
+                                }
+                                //not sure if the previous neo4j be reused
+                                neo4j = backend({
+                                    server: process.env.NEO4J_URL,
+                                    user: process.env.NEO4J_USER,
+                                    pass: process.env.NEO4J_PASS
+                                });
+                                boot(neo4j);
+                            });
+                        } else {
+                            log.error(err2, 'cannot connect to the storage');
+                            process.exit(2);
                         }
-                        //not sure if the previous neo4j be reused
-                        neo4j = backend({
-                            server: process.env.NEO4J_URL,
-                            user: process.env.NEO4J_USER,
-                            pass: process.env.NEO4J_PASS
-                        });
-                        boot(neo4j);
                     });
-                } else {
-                    log.error(err2, 'cannot connect to the storage');
-                    process.exit(2);
-                }
-            });
-        } else {
-            log.error(reason, 'cannot connect to the storage');
-            process.exit(3);
-        }
-    });
+            } else {
+                log.error(reason, 'cannot connect to the storage');
+                process.exit(3);
+            }
+        });
 } else {
     log.info('Running app as a module');
     exports.boot = boot;

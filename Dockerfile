@@ -1,4 +1,4 @@
-# Version: 0.3
+# Version: 0.4
 # to run:
 # docker service create --limit-memory 1g --limit-cpu 1.0 --detach \
 #      --with-registry-auth --env NEO4J_URL=http://localhost:13006 \
@@ -8,30 +8,28 @@
 FROM node:8-alpine
 MAINTAINER Milan Simonovic <milan.simonovic@imls.uzh.ch>
 
-ENV WD /var/www/paxdb
-
-# must copy each folder separately,
-# COPY dir1 dir2 ./ works like COPY dir1/* dir2/* ./
-COPY bin $WD/bin
-COPY lib $WD/lib
-COPY public $WD/public
-COPY routes $WD/routes
-COPY views $WD/views
-COPY app.js package.json $WD/
-COPY data/ontology $WD/data/ontology
-
-COPY integration_test $WD/integration_test
-
-WORKDIR  $WD
-RUN npm install
-
 # DEFAULTS, override when creating a container:
 ENV NEO4J_URL 'http://neo4j:7474'
 ENV NEO4J_USER neo4j
 ENV NEO4J_PASS neo4j
 
-# VOLUME $WD
+ENV WD /var/www/paxdb
+WORKDIR  $WD
 
 EXPOSE 3000
-
 CMD ["node", "./bin/www"]
+
+
+# --no-cache: download package index on-the-fly, no need to cleanup afterwards
+# --virtual: bundle packages, remove whole bundle at once, when done
+RUN apk update && apk --no-cache --virtual build-dependencies add python make
+
+# trick: avoid npm install
+COPY package.json .
+ENV NODE_ENV production
+RUN npm install --production
+
+RUN apk del build-dependencies
+
+COPY . .
+

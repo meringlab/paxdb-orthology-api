@@ -4,11 +4,12 @@ pipeline:
     commands:
       - npm install
       - npm run lint
+#      - npm run test # requires a neo4j service
 
   publish:
     image: plugins/docker
     registry: docker-registry.meringlab.org:5443
-    repo: docker-registry.meringlab.org:5443/paxdb/api
+    repo: docker-registry.meringlab.org:5443/paxdb/orthology-api:4.1.0
 #    when:
 #      event: deployment
 #      environment: staging

@@ -1,5 +1,6 @@
 const express = require('express');
-// const negotiate = require('express-negotiate');
+//negotiate is required!
+const negotiate = require('express-negotiate'); // eslint-disable-line no-unused-vars
 
 const router = express.Router();
 
