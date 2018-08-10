@@ -9,7 +9,9 @@ pipeline:
   publish:
     image: plugins/docker
     registry: docker-registry.meringlab.org:5443
-    repo: docker-registry.meringlab.org:5443/paxdb/orthology-api:4.1.0
+    repo: docker-registry.meringlab.org:5443/paxdb/orthology-api
+    tags: 4.1.0
+    auto_tag: false
 #    when:
 #      event: deployment
 #      environment: staging
