@@ -17,6 +17,15 @@ pipeline:
 #      event: deployment
 #      environment: staging
 
+  slack_blame:
+    image: plugins/slack-blame
+    secrets: [ slack_token ]
+    channel: paxdb-build-bot
+    success_template: |
+      paxdb/orthology-api build is green :) Thanks @{{slack.name}}
+    failure_template: |
+      paxdb/orthology-api build is broken :( Blame {{slack.name}}
+
 
 # stable-master pattern
 branches: master
