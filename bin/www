@@ -96,6 +96,9 @@ function shutdown() {
  * and in this case don't start the server (boot):
  */
 if (require.main === module) {
+    if (!process.env.NEO4J_URL) {
+        throw Error('NEO4J_URL is undefined!');
+    }
     let neo4j = backend({
         server: process.env.NEO4J_URL,
         user: process.env.NEO4J_USER,
