@@ -25,6 +25,8 @@ pipeline:
       paxdb/orthology-api build is green :) Thanks @{{slack.name}}
     failure_template: |
       paxdb/orthology-api build is broken :( Blame {{slack.name}}
+    when:
+        status: [ failure, success ]
 
 
 # stable-master pattern
