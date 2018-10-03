@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "bunyan": "^1.8",
-    "debug": "^2.6",
+    "debug": "^4.0.1",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-negotiate": "^0.0.5",
