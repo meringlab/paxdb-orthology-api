@@ -1,6 +1,6 @@
 pipeline:
   build:
-    image: node:8-alpine
+    image: node:10-alpine
     commands:
       - npm install
       - npm run lint
@@ -10,7 +10,7 @@ pipeline:
     image: plugins/docker
     registry: docker-registry.meringlab.org:5443
     repo: docker-registry.meringlab.org:5443/paxdb/orthology-api
-    tags: 4.1.0
+    tags: 4.1.1
     auto_tag: false
     secrets: [ docker_username, docker_password ]
 #    when:
