@@ -20,11 +20,12 @@ pipeline:
   slack_blame:
     image: plugins/slack-blame
     secrets: [ slack_token ]
+#    mapping: ./.git-slack-mapping.json
     channel: paxdb-build-bot
     success_template: |
-      paxdb/orthology-api build is green :) Thanks @{{slack.name}}
+      paxdb/orthology-api build is green :) Thanks {{user.name}}
     failure_template: |
-      paxdb/orthology-api build is broken :( Blame {{slack.name}}
+      paxdb/orthology-api build is broken :( Blame {{user.name}}
     when:
         status: [ failure, success ]
 
