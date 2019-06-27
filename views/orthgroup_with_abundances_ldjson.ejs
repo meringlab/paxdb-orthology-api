@@ -9,7 +9,7 @@
             {   "@id" : "proteins.api.pax-db.org/protein/<%= member.proteinId %>",
                 "@type": "Protein",
                 "id" : "<%= member.proteinId %>",
-                "iid" : "<%= member.stringdbInternalId %>",
+                "iid" : <%= member.stringdbInternalId %>,
                 "name" : "<%= member.name %>",
                 "orthologousGroups": "/protein/<%= member.proteinId %>/ortholog_groups",
                 "abundance":{
