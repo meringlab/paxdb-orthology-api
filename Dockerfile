@@ -6,7 +6,7 @@
 #      -p 13007:3000 paxdb/orthology-api:4.1.0
 #
 FROM node:10-alpine
-MAINTAINER Milan Simonovic <milan.simonovic@imls.uzh.ch>
+LABEL maintainer="qingyao.huang@uzh.ch"
 
 # DEFAULTS, override when creating a container:
 ENV NEO4J_URL 'http://localhost:7474'

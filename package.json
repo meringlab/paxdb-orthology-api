@@ -31,7 +31,7 @@
     "ejs": "^2.6.1",
     "express": "^4.17.1",
     "express-negotiate": "^0.0.6",
-    "paxdb-orthology-lib": "^4.1.4",
+    "paxdb-orthology-lib": "^5",
     "retry": "^0.12.0",
     "serve-favicon": "^2.5.0"
   },
@@ -43,7 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.14.2",
     "mocha": "^5.2.0",
-    "superagent": "^3.8"
+    "superagent": "^7"
   },
   "engines": {
     "node": "10.x"
