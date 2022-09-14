@@ -28,7 +28,7 @@
   "dependencies": {
     "bunyan": "^1.8",
     "debug": "^4.0.1",
-    "ejs": "^2.6.1",
+    "ejs": "^3.1.7",
     "express": "^4.17.1",
     "express-negotiate": "^0.0.6",
     "paxdb-orthology-lib": "^5",
