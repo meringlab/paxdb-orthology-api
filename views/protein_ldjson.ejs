@@ -5,14 +5,14 @@
         "@id" : "http://api.pax-db.org/protein/<%= protein %>",
         "id": "<%= protein %>"
     },
-    "@type": "OrhologGroups",
+    "@type": "OrthologGroups",
     "members": [
     <% for (var numLevels = taxonomicLevels.length, i = 0; i < numLevels; i++) {
         var level = taxonomicLevels[i];    %>
         {
 
         "@id": "/protein/<%= protein %>/ortholog_groups/<%= level %>",
-        "@type": "OrhologGroup",
+        "@type": "OrthologGroup",
         "taxonomicLevel": "<%= level %>"
         }
         <% if (i < numLevels - 1 ) { %> , <% } %>

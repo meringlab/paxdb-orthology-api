@@ -1,7 +1,7 @@
 {
     "@context": "http://api.pax-db.org/orthology-context.jsonld",
     "@id": "/protein/<%= proteinId %>/ortholog_groups/<%= taxonomicLevel %>/<%= tissue %>",
-    "@type": "OrhologGroup",
+    "@type": "OrthologGroup",
     "taxonomicLevel": "<%= taxonomicLevel %>",
     "members" : [
         <% for (var numMembers = members.length, m = 0; m < numMembers; m++) {
