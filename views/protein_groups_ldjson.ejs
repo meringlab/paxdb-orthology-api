@@ -2,12 +2,12 @@
     "@context": "http://api.pax-db.org/orthology-context.jsonld",
     "@id": "/protein/<%= protein.id %>",
     "id": "<%= protein.id %>",
-    "@type": "OrhologGroups",
+    "@type": "OrthologGroups",
 "members": [
 <% for (var numMembers = protein.members.length, i = 0; i < numMembers; i++) {
     var el = protein.members[i];    %> {
 "@id": "/protein/<%= protein.id %>/ortholog_groups/<%= el.taxonomicLevel %>",
-"@type": "OrhologGroup",
+"@type": "OrthologGroup",
 "taxonomicLevel": "<%= el.taxonomicLevel %>",
 "tissues" : [
 <% for (var numTissues = el.tissues.length, t = 0; t < numTissues; t++) {
